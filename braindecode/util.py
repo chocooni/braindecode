@@ -14,7 +14,7 @@ import torch
 from sklearn.utils import check_random_state
 
 
-def set_random_seeds(seed, cuda, cudnn_benchmark=None):
+def set_random_seeds(seed, mps, cudnn_benchmark=None):
     """Set seeds for python random module numpy.random and torch.
 
     For more details about reproducibility in pytorch see
@@ -43,7 +43,7 @@ def set_random_seeds(seed, cuda, cudnn_benchmark=None):
     """
     random.seed(seed)
     torch.manual_seed(seed)
-    if cuda:
+    if mps:
         if isinstance(cudnn_benchmark, bool):
             torch.backends.cudnn.benchmark = cudnn_benchmark
         elif cudnn_benchmark is None:
@@ -56,7 +56,7 @@ def set_random_seeds(seed, cuda, cudnn_benchmark=None):
             raise ValueError(
                 f"cudnn_benchmark expected to be bool or None, got '{cudnn_benchmark}'"
             )
-        torch.cuda.manual_seed_all(seed)
+        torch.mps.manual_seed(seed)
     np.random.seed(seed)
 
 
